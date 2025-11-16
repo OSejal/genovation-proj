@@ -20,7 +20,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS middleware 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  
@@ -44,7 +43,7 @@ def root():
         "docs": "/docs"
     }
 
-
+# Login user
 @app.post("/login/", response_model=LoginResponse, tags=["Authentication"])
 def login(request: LoginRequest):
     """
@@ -68,7 +67,7 @@ def login(request: LoginRequest):
         message=f"Login successful. Welcome, {request.username}!"
     )
 
-
+# Ask for prompt
 @app.post("/prompt/", response_model=PromptResponse, tags=["Prompts"])
 def submit_prompt(
     request: PromptRequest,
@@ -103,7 +102,7 @@ def submit_prompt(
         timestamp=timestamp
     )
 
-
+# Get history
 @app.get("/history/", response_model=HistoryResponse, tags=["History"])
 def get_history(username: str = Depends(verify_token)):
     """

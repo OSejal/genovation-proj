@@ -25,7 +25,7 @@ USERS_DB = {
     }
 }
 
-# Reverse lookup: token -> username
+# token -> username
 TOKENS_DB = {user_data["token"]: username for username, user_data in USERS_DB.items()}
 
 
