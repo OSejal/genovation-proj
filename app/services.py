@@ -8,12 +8,12 @@ from fastapi import HTTPException
 import time
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+# Load from .env file
 BASE_DIR = Path(__file__).resolve().parent.parent
 env_path = BASE_DIR / '.env'
 load_dotenv(dotenv_path=env_path)
 
-# Replicate API configuration from environment variables
+# Replicate API configuration from .env
 REPLICATE_API_KEY = os.getenv("REPLICATE_API_KEY")
 REPLICATE_API_URL = os.getenv("REPLICATE_API_URL", "https://api.replicate.com/v1/predictions")
 MODEL_VERSION = os.getenv("MODEL_VERSION", "meta/llama-4-maverick-instruct")
@@ -53,7 +53,7 @@ def call_replicate_api(prompt: str, timeout: int = 60) -> str:
     }
     
     try:
-        # Step 1: Create prediction
+        # Create prediction
         with httpx.Client(timeout=30.0) as client:
             response = client.post(
                 REPLICATE_API_URL,
@@ -73,7 +73,7 @@ def call_replicate_api(prompt: str, timeout: int = 60) -> str:
                 detail="Failed to get prediction URL from Replicate"
             )
         
-        # Step 2: Poll for results
+        # Poll for results
         start_time = time.time()
         with httpx.Client(timeout=30.0) as client:
             while True:
